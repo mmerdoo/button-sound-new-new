@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Большая кнопка</title>
+    <style>
+        /* Настройка фона и центрирование */
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center; /* Центр по горизонтали */
+            align-items: center;     /* Центр по вертикали */
+            height: 100vh;           /* На всю высоту экрана */
+            background-color: #87CEEB; /* Голубой цвет (SkyBlue) */
+            overflow: hidden;        /* Убираем прокрутку */
+        }
+
+        /* Контейнер для увеличения фрейма */
+        .button-container {
+            transform: scale(2.5); /* Увеличьте это число, если кнопка нужна еще больше */
+        }
+
+        iframe {
+            border: none;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="button-container">
+        <iframe src="https://www.myinstants.com/instant/my-pi-89366/embed/" 
+                width="256" 
+                height="129" 
+                scrolling="no" 
+                frameborder="0">
+        </iframe>
+    </div>
+
+</body>
+</html>
