@@ -48,7 +48,7 @@
 
         // Общий усилитель (громкость всего сразу)
         const masterGain = ctx.createGain();
-        masterGain.gain.value = 3; // 1.0 = оригинал, 1.5–2.0 = громче (может хрипеть выше 2)
+        masterGain.gain.value = 8; // 1.0 = оригинал, 1.5–2.0 = громче (может хрипеть выше 2)
         masterGain.connect(ctx.destination);
 
         let audioBuffer = null;
