@@ -13,12 +13,38 @@
             background-color: #87CEEB;
             overflow: hidden;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
         }
+
+        /* Контейнер для видео сверху */
+        #video-box {
+            width: 70vmin;
+            height: 40vmin;
+            margin-bottom: 3vmin;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #000;
+            border-radius: 2vmin;
+            overflow: hidden;
+            opacity: 0;                 /* спрятано, пока не нажали */
+            transition: opacity 0.15s;
+        }
+        #video-box.show {
+            opacity: 1;
+        }
+
+        #drop-video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
         #big-button {
-            width: 60vmin;
-            height: 60vmin;
+            width: 50vmin;
+            height: 50vmin;
             border-radius: 50%;
             background: radial-gradient(circle at 35% 30%, #ff5a5a, #b30000 70%);
             box-shadow: 0 10px 25px rgba(0,0,0,0.4),
@@ -37,44 +63,61 @@
 </head>
 <body>
 
+    <div id="video-box">
+        <video id="drop-video" src="drop.mp4" muted playsinline preload="auto"></video>
+    </div>
+
     <button id="big-button"></button>
 
     <script>
         const btn = document.getElementById('big-button');
+        const videoBox = document.getElementById('video-box');
+        const video = document.getElementById('drop-video');
 
-        // Создаём аудиоконтекст
+        // --- АУДИО ---
         const AudioCtx = window.AudioContext || window.webkitAudioContext;
         const ctx = new AudioCtx();
 
-        // Общий усилитель (громкость всего сразу)
         const masterGain = ctx.createGain();
-        masterGain.gain.value = 8; // 1.0 = оригинал, 1.5–2.0 = громче (может хрипеть выше 2)
+        masterGain.gain.value = 8;   // твоё усиление, оставил как есть
         masterGain.connect(ctx.destination);
 
         let audioBuffer = null;
 
-        // Загружаем mp3 один раз и декодируем в буфер
         fetch('sound.mp3')
             .then(res => res.arrayBuffer())
             .then(data => ctx.decodeAudioData(data))
             .then(buffer => { audioBuffer = buffer; })
             .catch(err => console.error('Ошибка загрузки звука:', err));
 
-        // Воспроизведение: каждый раз — новый источник (накладываются)
         function playSound() {
             if (!audioBuffer) return;
-
             const source = ctx.createBufferSource();
             source.buffer = audioBuffer;
             source.connect(masterGain);
             source.start(0);
         }
 
-        // Клик / тап
+        // --- ВИДЕО ---
+        let hideTimer = null;
+
+        function playVideo() {
+            videoBox.classList.add('show');
+            video.currentTime = 0;
+            video.play().catch(() => {});
+
+            // Прячем видео, когда оно закончится
+            clearTimeout(hideTimer);
+            hideTimer = setTimeout(() => {
+                videoBox.classList.remove('show');
+            }, 3000); // 3 сек — подгони под длину твоего видео
+        }
+
+        // --- КЛИК ---
         btn.addEventListener('click', () => {
-            // Некоторые браузеры стартуют контекст только после жеста
             if (ctx.state === 'suspended') ctx.resume();
             playSound();
+            playVideo();
         });
     </script>
 
