@@ -21,11 +21,14 @@
             height: 60vmin;
             border-radius: 50%;
             background: radial-gradient(circle at 35% 30%, #ff5a5a, #b30000 70%);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.4), inset 0 -8px 15px rgba(0,0,0,0.3), inset 0 8px 15px rgba(255,255,255,0.25);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4),
+                        inset 0 -8px 15px rgba(0,0,0,0.3),
+                        inset 0 8px 15px rgba(255,255,255,0.25);
             border: none;
             cursor: pointer;
             transition: transform 0.1s;
             -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
         }
         #big-button:active {
             transform: scale(0.95);
@@ -35,14 +38,43 @@
 <body>
 
     <button id="big-button"></button>
-    <audio id="sound" src="sound.mp3" preload="auto"></audio>
 
     <script>
         const btn = document.getElementById('big-button');
-        const audio = document.getElementById('sound');
+
+        // Создаём аудиоконтекст
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        const ctx = new AudioCtx();
+
+        // Общий усилитель (громкость всего сразу)
+        const masterGain = ctx.createGain();
+        masterGain.gain.value = 1.5; // 1.0 = оригинал, 1.5–2.0 = громче (может хрипеть выше 2)
+        masterGain.connect(ctx.destination);
+
+        let audioBuffer = null;
+
+        // Загружаем mp3 один раз и декодируем в буфер
+        fetch('sound.mp3')
+            .then(res => res.arrayBuffer())
+            .then(data => ctx.decodeAudioData(data))
+            .then(buffer => { audioBuffer = buffer; })
+            .catch(err => console.error('Ошибка загрузки звука:', err));
+
+        // Воспроизведение: каждый раз — новый источник (накладываются)
+        function playSound() {
+            if (!audioBuffer) return;
+
+            const source = ctx.createBufferSource();
+            source.buffer = audioBuffer;
+            source.connect(masterGain);
+            source.start(0);
+        }
+
+        // Клик / тап
         btn.addEventListener('click', () => {
-            audio.currentTime = 0;
-            audio.play();
+            // Некоторые браузеры стартуют контекст только после жеста
+            if (ctx.state === 'suspended') ctx.resume();
+            playSound();
         });
     </script>
 
