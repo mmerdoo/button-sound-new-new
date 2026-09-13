@@ -2,10 +2,10 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ручная настройка центра</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Кнопка</title>
     <style>
-        body, html {
+        html, body {
             margin: 0;
             padding: 0;
             width: 100%;
@@ -18,15 +18,11 @@
         }
 
         .button-wrapper {
-            /* Увеличиваем кнопку */
-            transform: scale(5);
-            -webkit-transform: scale(5);
-            
-            /* ВРУЧНУЮ ПОДВИГАЕМ ВПРАВО */
-            /* Если на твоем телефоне кнопка все еще слишком лево — увеличь это число (например, 25%) */
-            /* Если она уехала слишком вправо — уменьши (например, 10%) */
-            margin-left: 150%; 
-            
+            /* Масштаб кнопки. Увеличь, если нужно больше. */
+            transform: scale(2.2);
+            -webkit-transform: scale(2.2);
+            transform-origin: center center;
+            -webkit-transform-origin: center center;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -34,20 +30,21 @@
 
         iframe {
             border: none;
+            display: block;
         }
     </style>
 </head>
 <body>
 
     <div class="button-wrapper">
-        <iframe src="https://www.myinstants.com/instant/tvoi-vysokii-shans-na-bolshoi-drop-musor-drop-41067/embed/" 
-                width="256" 
-                height="129" 
-                scrolling="no" 
-                frameborder="0">
+        <iframe 
+            src="https://www.myinstants.com/instant/tvoi-vysokii-shans-na-bolshoi-drop-musor-drop-41067/embed/"
+            width="110"
+            height="200"
+            scrolling="no"
+            frameborder="0">
         </iframe>
     </div>
 
 </body>
 </html>
-
