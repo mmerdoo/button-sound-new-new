@@ -16,35 +16,35 @@
             justify-content: center;
             align-items: center;
         }
-
-        .button-wrapper {
-            /* Масштаб кнопки. Увеличь, если нужно больше. */
-            transform: scale(2.2);
-            -webkit-transform: scale(2.2);
-            transform-origin: center center;
-            -webkit-transform-origin: center center;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        iframe {
+        #big-button {
+            width: 60vmin;
+            height: 60vmin;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 30%, #ff5a5a, #b30000 70%);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4), inset 0 -8px 15px rgba(0,0,0,0.3), inset 0 8px 15px rgba(255,255,255,0.25);
             border: none;
-            display: block;
+            cursor: pointer;
+            transition: transform 0.1s;
+            -webkit-tap-highlight-color: transparent;
+        }
+        #big-button:active {
+            transform: scale(0.95);
         }
     </style>
 </head>
 <body>
 
-    <div class="button-wrapper">
-        <iframe 
-            src="https://www.myinstants.com/instant/tvoi-vysokii-shans-na-bolshoi-drop-musor-drop-41067/embed/"
-            width="110"
-            height="200"
-            scrolling="no"
-            frameborder="0">
-        </iframe>
-    </div>
+    <button id="big-button"></button>
+    <audio id="sound" src="sound.mp3" preload="auto"></audio>
+
+    <script>
+        const btn = document.getElementById('big-button');
+        const audio = document.getElementById('sound');
+        btn.addEventListener('click', () => {
+            audio.currentTime = 0;
+            audio.play();
+        });
+    </script>
 
 </body>
 </html>
